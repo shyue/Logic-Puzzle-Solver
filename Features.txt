@@ -1,0 +1,14 @@
+;lists of features and properties
+;Feature lists	- longer version: (player position lucky-charm)
+(player position charm)
+;Player list - longer version: (Blacket Bluet Browning Greenfield Whitehall)
+(black blue brown green white)
+;Position list	- longer version: (center-field first-base right-field shortstop third-base)
+(center first right short third)
+;Charm list - longer version: (clover penny rabbit-foot ribbon silver-dollar)
+(clover penny foot ribbon dollar)
+;Property Lists
+;coins
+(penny dollar)
+;outfield/infield - infield is just opposite of outfield so (first short third)
+(center right)
