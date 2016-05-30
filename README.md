@@ -26,12 +26,19 @@ Knowledge Representation:
 Good website for rules: http://logic-puzzles.org/how-to-solve-a-logic-puzzle.php
 
 For multiple of the same facts, split it (ex: a and b are not c -> (a c nil), (b c nil))
+
 Neither a nor b has/is c -> (a c nil), (b c nil) (a b nil)
+
 a is not b -> (a b nil)
+
 a is b -> (a b t)
+
 a does/is not either b or c -> (a b nil), (a c nil)
+
 the n things are: a b c d...n -> (a b nil) (a c nil) (a d nil) ... (a n nil) (b c nil) (b d nil) ... (b n nil) (c d nil) ... etc.
+
 a is either b or c -> (b c nil) (a (b c) t)
+
 of a and b, one was c and the other was d -> (a b nil) (c d nil) (a (c d)) (b (c d))
 
 
