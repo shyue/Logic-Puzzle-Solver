@@ -39,6 +39,8 @@ the n things are: a b c d...n -> (a b nil) (a c nil) (a d nil) ... (a n nil) (b 
 
 a is either b or c -> (b c nil) (a (b c) t) Note: (b c nil) can be removed if they are same type (ex: Nick has a dog or cat)
 
+a is either b or c -> (a x nil) where x is in the same list as b and c, but is not b and c
+
 of a and b, one was c and the other was d -> (a b nil) (c d nil) (a (c d)) (b (c d))
 
 a's b-type (ex: Whitehall's infield position) -> (a b nil)
@@ -55,3 +57,49 @@ http://www.gigamonkeys.com/book/collections.html
 Psuedocode:
 
 first, read in all rules and data
+
+then create table/array - top labels for (a, b, c...n) are a to n-1 from left to right, and side labels are b to n from bottom to top
+
+given that there are y choices for the n features, it will be an (n-1)*y by (n-1)*y array
+
+fix/re-order rules:
+
+1. if it's a singular rule like (x y t) then check which list you find x and y in data. if x is in the same list as y, drop the rule, if y < x switch x and y in rule
+
+2. if it's a multi rule like (x (y z) t) then do the same as singular rule, except look for x and y only, and then swap the first two elements accordingly
+
+while (not fun_solved){
+
+	for each rule:
+		
+		if it's a singular rule, just insert t or nil in the grid
+
+		if it's a multi rule:
+
+			if it's in the form (a (b c ... ) t) duplicate (b c ... ) look vertically and remove from (b c ...) if [a][...] is false and if the remaining list has only one thing, then [a][remainingOne] = t
+ 	
+			if it's in the form ((b c ...) a t) do the same except look horizontally
+
+
+	fun_rule1
+
+	vert_rule2and3
+
+	horiz_rule2and3
+
+
+}
+
+
+fun_solved -> checks if table is solved:
+
+fun_rule1 -> does rule 1
+
+vert_rule2and3 -> finds all trues, and then looks vertically for a (the same element) and then adds the rules in
+
+horiz_rule2and3 -> finds all trues, and then looks horiz for a (the same element) and then adds the rules in
+
+
+an additional function called loc will be used
+
+loc will change it into coordinates - choice a can be found in position (feature index-1)*(number of choices per feature)+(position in feature list)
