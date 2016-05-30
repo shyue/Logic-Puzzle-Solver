@@ -37,11 +37,21 @@ a does/is not either b or c -> (a b nil), (a c nil)
 
 the n things are: a b c d...n -> (a b nil) (a c nil) (a d nil) ... (a n nil) (b c nil) (b d nil) ... (b n nil) (c d nil) ... etc.
 
-a is either b or c -> (b c nil) (a (b c) t)
+a is either b or c -> (b c nil) (a (b c) t) Note: (b c nil) can be removed if they are same type (ex: Nick has a dog or cat)
 
 of a and b, one was c and the other was d -> (a b nil) (c d nil) (a (c d)) (b (c d))
 
+a's b-type (ex: Whitehall's infield position) -> (a b nil)
+
+for words that encompass multiple things, break them out -> a is an outfielder -> a is either center or right -> use corresponding rule
+                                                         
+							 -> a is not an outfielder -> (a center nil) (b right nil)
 
 
+Other Resources: 
+http://www.tutorialspoint.com/lisp/lisp_arrays.htm
+http://www.gigamonkeys.com/book/collections.html
 
 Psuedocode:
+
+first, read in all rules and data
