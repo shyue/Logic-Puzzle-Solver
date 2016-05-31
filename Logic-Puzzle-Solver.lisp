@@ -62,6 +62,9 @@
 )))
 ;(write table)
 
+
+
+; function for checking if puzzle is solved
 (defun puzzleSolved ()
 	(setq returner t)
 	(loop for i from 0 to (- (* choices feature-index) 1) do
@@ -75,6 +78,32 @@
 
 	returner
 )
+
+
+; horizontal location - finds array index of the first location in rule (meaning it is on top)
+(defun horLoc (a)
+
+(setq returner nil)
+(let ((ct 0))
+(dolist (curr-feat features)
+	(if (numberp (position a curr-feat)) (setq returner (+ (* choices ct) (position a curr-feat))))
+	(setq ct (+ ct 1))
+))
+returner
+)
+
+; vertical location - finds array index of the second location in rule (meaning it is on the side)
+(defun verLoc (a)
+(setq returner nil)
+(let ((ct 0))
+(dolist (curr-feat (reverse features))
+	;(setq curr-feat (reverse curr-feat))
+	(if (numberp (position a curr-feat)) (setq returner (+ (* choices ct) (position a curr-feat))))
+	(setq ct (+ ct 1))
+))
+returner
+)
+
 
 ; fix rules
 (setq copy-rules nil)
@@ -113,7 +142,7 @@
 ; while not solved
 (loop while (not (puzzleSolved)) do
 
-
+	(print (verLoc 'ribbon))
 
 
 )
