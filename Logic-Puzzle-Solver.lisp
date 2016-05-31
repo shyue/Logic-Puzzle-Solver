@@ -83,9 +83,38 @@
 (defun fillRule ()
 	(loop for i from 0 to (- feature-index 1) do
 		(loop for j from 0 to (- feature-index (+ 1 i)) do
+
+		;find trues vertically
+		(loop for x from 0 to (- choices 1) do
+			(setq avail nil)
+			(loop for y from 0 to (- choices 1) do
+				(if (equalp (aref table (+ (* choices i) x) (+ (* choices j) y)) 0)
+					(setq avail (cons y avail))
+				)
+			)
+			(if (and avail (not (cdr avail)))
+			(setf (aref table (+ (* choices i) x) (+ (* choices j) (first avail))) t)
+			)
+		)
+
+		;find trues horizontally
+		(loop for y from 0 to (- choices 1) do
+			(setq avail nil)
+			(loop for x from 0 to (- choices 1) do
+				(if (equalp (aref table (+ (* choices i) x) (+ (* choices j) y)) 0)
+					(setq avail (cons x avail))
+				)
+			)
+			(if (and avail (not (cdr avail)))
+			(setf (aref table (+ (* choices i) (first avail)) (+ (* choices j) y)) t)
+			)
+		)
+
 		;check for true
 			(loop for x from 0 to (- choices 1) do
 				(loop for y from 0 to (- choices 1) do
+					;(print (list i j x y))
+					;(print (aref table (+ (* choices i) x) (+ (* choices j) y)))
 					(if (and (aref table (+ (* choices i) x) (+ (* choices j) y)) (not (equalp (aref table (+ (* choices i) x) (+ (* choices j) y)) 0)))
 						;(print (list (+ (* choices i) x) (+ (* choices j) y)))
 						(loop for a from 0 to (- choices 1) do
@@ -99,32 +128,6 @@
 					)
 				)
 			)
-		;find trues vertically
-		(loop for x from 0 to (- choices 1) do
-			(setq avail nil)
-			(loop for y from 0 to (- choices 1) do
-				(if (equalp (aref table (+ (* choices i) x) (+ (* choices j) y)) 0)
-					(setq avail (cons y avail))
-				)
-			)
-			(if (not (cdr avail))
-			(setf (aref table (+ (* choices i) x) (+ (* choices j) (first avail))) t)
-			)
-		)
-
-		;find trues horizontally
-		(loop for y from 0 to (- choices 1) do
-			(setq avail nil)
-			(loop for x from 0 to (- choices 1) do
-				(if (equalp (aref table (+ (* choices i) x) (+ (* choices j) y)) 0)
-					(setq avail (cons x avail))
-				)
-			)
-			(if (not (cdr avail))
-			(setf (aref table (+ (* choices i) (first avail)) (+ (* choices j) y)) t)
-			)
-		)
-
 		)
 	)
 )
@@ -137,8 +140,7 @@
 		(loop for j from 0 to (- choices 1) do
 		(loop for a from 0 to (- (* feature-index choices) (+ (* i choices) 1) ) do
 			(loop for b from 0 to (- a 1) do
-				(if (not (equalp a b))
-					;(setq x (+ j (* choices i)))
+
 
 						; vertical
 						(if (and (aref table (+ j (* choices i)) a) (aref table (+ j (* choices i)) b)
@@ -156,7 +158,56 @@
 						)
 
 
-				)
+						(if
+							(or
+								(and (aref table (+ j (* choices i)) a) (not (equalp (aref table (+ j (* choices i)) a) 0)) (equalp (aref table (+ j (* choices i)) b) nil))
+								(and (aref table (+ j (* choices i)) b) (not (equalp (aref table (+ j (* choices i)) b) 0)) (equalp (aref table (+ j (* choices i)) a) nil))
+							)
+								(setq rules (cons
+								(list
+								(nth (+ (rem a choices) 0) (nth (+ (floor (/ a choices)) 0) (reverse (cdr features))))
+								(nth (+ (rem b choices) 0) (nth (+ (floor (/ b choices)) 0) (reverse (cdr features))))
+								 nil) rules))
+								;(print (list i j a b))
+								;(print (nth (+ (floor (/ a choices)) 1) (reverse (cdr features))))
+						)
+
+						;horizontal
+						(if (and (aref table a (+ j (* choices i))) (aref table b (+ j (* choices i)))
+							(not (equalp (aref table a (+ j (* choices i))) 0))
+							(not (equalp (aref table b (+ j (* choices i))) 0))
+							)
+							(setq rules (cons
+							(list
+							(nth (+ (rem a choices) 0) (nth (+ (floor (/ a choices)) 0) features))
+							(nth (+ (rem b choices) 0) (nth (+ (floor (/ b choices)) 0) features))
+							 t) rules))
+							;(print (list i j a b))
+							;(print (nth (+ (floor (/ a choices)) 1) (reverse (cdr features))))
+
+						)
+
+
+						(if
+							(or
+								(and (aref table a (+ j (* choices i))) (not (equalp (aref table a (+ j (* choices i))) 0)) (equalp (aref table b (+ j (* choices i))) nil))
+								(and (aref table b (+ j (* choices i))) (not (equalp (aref table b (+ j (* choices i))) 0)) (equalp (aref table a (+ j (* choices i))) nil))
+							)
+								(setq rules (cons
+								(list
+								(nth (+ (rem a choices) 0) (nth (+ (floor (/ a choices)) 0) features))
+								(nth (+ (rem b choices) 0) (nth (+ (floor (/ b choices)) 0) features))
+								 nil) rules))
+								;(print (list i j a b))
+								;(print (nth (+ (floor (/ a choices)) 1) (reverse (cdr features))))
+						)
+
+
+
+
+
+
+
 			)
 		)
 		)
@@ -243,15 +294,19 @@ returner
 
 	)
 	(setq rules (reverse copy-rules))
+	(print rules)
 
 	(fillRule)
 
-	;(write table)
+
 
 	(transpositionRule)
 
-	;(write table)
 
-	(print rules)
+	(write table)
+	(print '-------)
+
 	(return)
 )
+
+;(write table)
