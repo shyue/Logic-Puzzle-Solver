@@ -51,6 +51,24 @@
 		(Center Rabbit-Foot nil)
 ))
 
+;reads featires
+(defun reader (filepath)
+   (setf input (open filepath :if-does-not-exist nil))
+   (setf features nil)
+   (when input
+	 (setf features (read input nil)))
+   ;(print features)
+   (close input))
+
+ ;reads rules
+(defun ruleReader (filepath)
+	(setf input (open filepath :if-does-not-exist nil))
+	(setf rules nil)
+    (when input
+      (setf rules (read input nil)))
+    ;(print rules)
+    (close input))
+
 
 ;creating table that is (num features - 1)*(choices for feature) squared
 (setf feature-index (- (length features) 1) )
@@ -237,9 +255,16 @@ returner
 
 
 (defun main ()
+
+(reader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/GoodFeatures.txt")
+(ruleReader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/Rules.txt")
+
+
 ; while not solved
 (loop while (not (puzzleSolved)) do
 
+(print rules)
+(print features)
 
 ; fix rules
 (setq copy-rules nil)

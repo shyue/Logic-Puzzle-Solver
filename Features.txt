@@ -1,6 +1,6 @@
 ;lists of features and properties
 ;Feature lists	- longer version: (player position lucky-charm)
-(player position lucky-charm)
+;(player position lucky-charm)
 ;Player list - longer version: (Blacket Bluet Browning Greenfield Whitehall)
 ;short version: (black blue brown green white)
 (Blacket Bluet Browning Greenfield Whitehall)

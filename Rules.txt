@@ -15,7 +15,7 @@
 ;a's b-type (ex: Whitehall's infield position) -> (a b nil)
 ;for words that encompass multiple things, break them out -> a is an outfielder -> a is either center or right -> use corresponding rule
 ;-> a is not an outfielder -> (a center nil) (b right nil)
-'(
+(
 	;first clue: Neither Browning nor the two outfielders have a coin as a lucky charm
 	;extended version of - Neither a nor b has/is c -> (a c nil), (b c nil), (a b nil)
 	(Browning Center nil)
