@@ -3,7 +3,7 @@
 	(Browning Center nil)
 	(Browning Right nil)
 	(Center Penny nil)
-	(Centy Silver-Dollar nil)
+	(Center Silver-Dollar nil)
 	(Right Penny nil)
 	(Right Silver-Dollar nil)
 	(Browning Penny nil)
