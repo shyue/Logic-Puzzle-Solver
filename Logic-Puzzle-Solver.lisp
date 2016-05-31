@@ -10,6 +10,8 @@
 (setf features nil)
 (setf rules nil)
 (setf table nil)
+(setf feature-index nil)
+(setf choices nil)
 
 ;reads features
 (defun reader (filepath)
@@ -124,6 +126,7 @@
 
 
 					;setting up horiz and vert coordinates to link them
+					;(print (- (* feature-index choices) (+ (* i choices) 1)))
 					(if (<= a (- (* feature-index choices) (+ (* i choices) 1) ))
 						(progn
 							(setq a1 (+ j (* choices i)))
@@ -217,17 +220,21 @@ returner
 
 (defun main ()
 
-(reader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/GoodFeatures.txt")
-(ruleReader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/Rules.txt")
+(reader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/testFeature2.txt")
+(ruleReader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/testRules2.txt")
 (tableMaker)
 
+
+(setq ct 0)
 ; while not solved
-(loop while (not (puzzleSolved)) do
+;(loop while (not (puzzleSolved)) do
+(loop while (< ct 5) do
 
 ;(print rules)
 ;(print features)
 ;(print (* feature-index choices))
-
+;(print feature-index)
+;(print choices)
 
 ; fix rules
 (setq copy-rules nil)
@@ -265,14 +272,23 @@ returner
 
 (setq rules (reverse copy-rules))
 
-
+	;(print rules)
 
 	(setq copy-rules nil)
 	(dolist (curr-rule rules)
 		;single-single rule
 		(if (and (atom (first curr-rule)) (atom (second curr-rule)))
-			(setf (aref table (horLoc (first curr-rule)) (verLoc (second curr-rule))) (third curr-rule))
+			(if  (equalp (aref table (horLoc (first curr-rule)) (verLoc (second curr-rule))) 0)
+				(setf (aref table (horLoc (first curr-rule)) (verLoc (second curr-rule))) (third curr-rule))
+			)
 		)
+
+		;(if (and (atom (first curr-rule)) (atom (second curr-rule)))
+		;(if (not (equalp (third curr-rule) (aref table (horLoc (first curr-rule)) (verLoc (second curr-rule)))))
+			;(print (list curr-rule (aref table (horLoc (first curr-rule)) (verLoc (second curr-rule)))))
+
+		;))
+
 		(if (not (and (atom (first curr-rule)) (atom (second curr-rule))))
 		(setq copy-rules (cons curr-rule copy-rules)))
 
@@ -280,13 +296,17 @@ returner
 	(setq rules (reverse copy-rules))
 
 
-
+	;(print '---)
+	;(write table)
 	(fillRule)
 
+
 	(transpositionRule)
+	;(print '***)
+	;(write table)
+	;(fillRule)
 
-
-
+	(setq ct (+ 1 ct))
 
 
 )

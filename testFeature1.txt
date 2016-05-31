@@ -1,4 +1,6 @@
-((Jane Julie Jackie Josie)
-(1 2 3 4)
-(First Second Third Fourth)
-(Yellow Red Green Blue))
+(
+(Archibald Lucas Charlie Billy Gary)
+(Macabre Chilling Terrifying Bloodcurdling Creepy)
+(George Briar Rosendale Avalon High)
+(Castle Bungalow Hotel Breakfast Pub))
+

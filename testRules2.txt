@@ -1,0 +1,13 @@
+(
+(Alan bathroom nil)
+(Kara kitchen nil)
+(Brian Maud t)
+(Brian windows nil)
+(Laura conservatory t)
+(Charles kitchen nil)
+(David kitchen nil)
+(Julie windows nil)
+(Alan windows nil)
+(Alan Laura nil)
+(Charles Kara nil)
+)
