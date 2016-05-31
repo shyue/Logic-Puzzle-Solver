@@ -304,6 +304,15 @@ returner
 )
 
 ;printing stuff
-
+(let ((curr-list nil))
+(loop for i from 0 to (- choices 1) do
+	(setq curr-list (cons (nth i (car features)) nil))
+	(loop for j from 0 to (- (* choices feature-index) 1) do
+	(if (and (aref table i j) (not (equalp (aref table i j) 0)))
+	(setq curr-list (cons (nth (+ (rem j choices) 0) (nth (+ (floor (/ j choices)) 0) (reverse (cdr features)))) curr-list))
+	)
+	)
+	(print (reverse curr-list))
+))
 
 )
