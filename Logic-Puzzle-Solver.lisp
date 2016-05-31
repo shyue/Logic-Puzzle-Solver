@@ -111,7 +111,7 @@ returner
 (dolist (curr-rule rules)
 
 	;single-single rule
-	(if (and (atom (first curr-rule)) (atom (first curr-rule)))
+	(if (and (atom (first curr-rule)) (atom (second curr-rule)))
 		; check for location of each
 		(let ((x 0) (y 0) (ct 0))
 		(dolist (curr-feat features)
@@ -125,6 +125,7 @@ returner
 		(if (< x y) (setq copy-rules (cons curr-rule copy-rules)))
 		(if (> x y) (setq copy-rules (cons (list (second curr-rule) (first curr-rule) (third curr-rule)) copy-rules)))
 		)
+		(setq copy-rules (cons curr-rule copy-rules))
 	)
 
 	;NOTE: unfinished
@@ -137,12 +138,24 @@ returner
 	;none of these, as defined by knowledge representation rules
 
 )
+
 (setq rules (reverse copy-rules))
 
 ; while not solved
 (loop while (not (puzzleSolved)) do
 
-	(print (verLoc 'ribbon))
+	(setq copy-rules nil)
+	(dolist (curr-rule rules)
+		;single-single rule
+		(if (and (atom (first curr-rule)) (atom (second curr-rule)))
+			(setf (aref table (horLoc (first curr-rule)) (verLoc (second curr-rule))) (third curr-rule))
+		)
+		(if (not (and (atom (first curr-rule)) (atom (second curr-rule))))
+		(setq copy-rules (cons curr-rule copy-rules)))
 
-
+	)
+	(setq rules (reverse copy-rules))
+	(print rules)
+	(write table)
+	(return)
 )
