@@ -79,6 +79,58 @@
 	returner
 )
 
+;rule 1 - filling in grid
+(defun fillRule()
+	(loop for i from 0 to (- feature-index 1) do
+		(loop for j from 0 to (- feature-index (+ 1 i)) do
+		;check for true
+			(loop for x from 0 to (- choices 1) do
+				(loop for y from 0 to (- choices 1) do
+					(if (and (aref table (+ (* choices i) x) (+ (* choices j) y)) (not (equalp (aref table (+ (* choices i) x) (+ (* choices j) y)) 0)))
+						;(print (list (+ (* choices i) x) (+ (* choices j) y)))
+						(loop for a from 0 to (- choices 1) do
+							(loop for b from 0 to (- choices 1) do
+								;a=x XOR b=y
+								(if (and (not (and (equalp a x) (equalp b y))) (or (equalp a x) (equalp b y)))
+										(setf (aref table (+ (* choices i) a) (+ (* choices j) b)) nil)
+								)
+							)
+						)
+					)
+				)
+			)
+		;find trues vertically
+		(loop for x from 0 to (- choices 1) do
+			(setq avail nil)
+			(loop for y from 0 to (- choices 1) do
+				(if (equalp (aref table (+ (* choices i) x) (+ (* choices j) y)) 0)
+					(setq avail (cons y avail))
+				)
+			)
+			(if (not (cdr avail))
+			(setf (aref table (+ (* choices i) x) (+ (* choices j) (first avail))) t)
+			)
+		)
+
+		;find trues horizontally
+		(loop for y from 0 to (- choices 1) do
+			(setq avail nil)
+			(loop for x from 0 to (- choices 1) do
+				(if (equalp (aref table (+ (* choices i) x) (+ (* choices j) y)) 0)
+					(setq avail (cons x avail))
+				)
+			)
+			(if (not (cdr avail))
+			(setf (aref table (+ (* choices i) (first avail)) (+ (* choices j) y)) t)
+			)
+		)
+
+		)
+	)
+)
+
+
+
 
 ; horizontal location - finds array index of the first location in rule (meaning it is on top)
 (defun horLoc (a)
@@ -155,7 +207,10 @@ returner
 
 	)
 	(setq rules (reverse copy-rules))
-	(print rules)
+
+	(fillRule)
+
 	(write table)
+
 	(return)
 )
