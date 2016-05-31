@@ -7,51 +7,11 @@
 
 ; NOTE: Multi rules (eithers) have not been properly implemented - they may not be necessary for simple puzzles, but possibly for more advanced puzzles
 
-(setq features '(
-		(Blacket Bluet Browning Greenfield Whitehall)
-		(Four-Leaf-Clover Penny Rabbit-Foot Ribbon Silver-Dollar)
-		(Center First Right Shortstop Third)
-))
+(setf features nil)
+(setf rules nil)
+(setf table nil)
 
-(setq rules '(
-		(Browning Center nil)
-		(Browning Right nil)
-		(Center Penny nil)
-		(Center Silver-Dollar nil)
-		(Right Penny nil)
-		(Right Silver-Dollar nil)
-		(Browning Penny nil)
-		(Browning Silver-Dollar nil)
-
-		(Bluet Center nil)
-		(Bluet Right nil)
-
-		(Greenfield (Center Right) t)
-		(Greenfield First nil)
-		(Greenfield Shortstop nil)
-		(Greenfield Third nil)
-		(Whitehall (First Shortstop Third) t)
-		(Whitehall Center nil)
-		(Whitehall Right nil)
-		(Whitehall First nil)
-		(Greenfield Four-Leaf-Clover nil)
-		(Whitehall Four-Leaf-Clover nil)
-		(Greenfield Penny nil)
-		(Whitehall Penny nil)
-		(Blacket Four-Leaf-Clover nil)
-		(Blacket Penny nil)
-
-		(Blacket Ribbon nil)
-		(Bluet Ribbon nil)
-		(Blacket First nil)
-		(Blacket Third nil)
-		(Bluet First nil)
-		(Bluet Third nil)
-
-		(Center Rabbit-Foot nil)
-))
-
-;reads featires
+;reads features
 (defun reader (filepath)
    (setf input (open filepath :if-does-not-exist nil))
    (setf features nil)
@@ -69,7 +29,7 @@
     ;(print rules)
     (close input))
 
-
+(defun tableMaker ()
 ;creating table that is (num features - 1)*(choices for feature) squared
 (setf feature-index (- (length features) 1) )
 (setf choices (length (car features)) )
@@ -79,6 +39,7 @@
 	(* feature-index choices)
 )))
 ;(write table)
+)
 
 
 
@@ -258,13 +219,15 @@ returner
 
 (reader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/GoodFeatures.txt")
 (ruleReader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/Rules.txt")
-
+(tableMaker)
 
 ; while not solved
 (loop while (not (puzzleSolved)) do
 
-(print rules)
-(print features)
+;(print rules)
+;(print features)
+;(print (* feature-index choices))
+
 
 ; fix rules
 (setq copy-rules nil)
