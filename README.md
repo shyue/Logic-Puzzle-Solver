@@ -49,6 +49,8 @@ for words that encompass multiple things, break them out -> a is an outfielder -
                                                          
 							 -> a is not an outfielder -> (a center nil) (b right nil)
 
+							 -> a or b are either c or d -> (a is either c or d) (b is either c or d) -> use corresponding rule, also (a b nil) (c d nil) if applicable 
+
 
 Other Resources: 
 http://www.tutorialspoint.com/lisp/lisp_arrays.htm

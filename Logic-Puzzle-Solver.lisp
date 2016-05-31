@@ -2,6 +2,11 @@
 ; Josh Yuan
 
 
+
+; NOTE: Mispellings may be fatal, as with other minor accidents. Make sure not to mess up!!!
+
+; NOTE: Multi rules (eithers) have not been properly implemented - they may not be necessary for simple puzzles, but possibly for more advanced puzzles
+
 (setq features '(
 		(Blacket Bluet Browning Greenfield Whitehall)
 		(Four-Leaf-Clover Penny Rabbit-Foot Ribbon Silver-Dollar)
@@ -17,7 +22,7 @@
 		(Right Silver-Dollar nil)
 		(Browning Penny nil)
 		(Browning Silver-Dollar nil)
-		
+
 		(Bluet Center nil)
 		(Bluet Right nil)
 
@@ -55,19 +60,33 @@
 	(* feature-index choices)
 	(* feature-index choices)
 )))
-(write table)
+;(write table)
 
+(defun puzzleSolved ()
+	(setq returner t)
+	(loop for i from 0 to (- (* choices feature-index) 1) do
+		(setq found nil)
+		(loop for j from 0 to (- choices 1)  do
+			(setq found (or found (and (aref table j i) (not (equalp (aref table j i) 0)))))
+		)
+		(setq returner (and found returner))
+	)
+
+
+	returner
+)
 
 ; fix rules
 (setq copy-rules nil)
 ; for each rule
 (dolist (curr-rule rules)
-	;single rule
-	(if (and (atom (first curr-rule)) (atom (first curr-rule))) 
+
+	;single-single rule
+	(if (and (atom (first curr-rule)) (atom (first curr-rule)))
 		; check for location of each
 		(let ((x 0) (y 0) (ct 0))
 		(dolist (curr-feat features)
-			(setq ct (+ ct 1))				
+			(setq ct (+ ct 1))
 			(if (numberp (position (first curr-rule) curr-feat)) (setq x ct))
 			(if (numberp (position (second curr-rule) curr-feat)) (setq y ct))
 
@@ -78,34 +97,23 @@
 		(if (> x y) (setq copy-rules (cons (list (second curr-rule) (first curr-rule) (third curr-rule)) copy-rules)))
 		)
 	)
+
+	;NOTE: unfinished
+	;multi-single rule
+
+	;NOTE: unfinished
+	;single-multi rule
+
+	;multi-multi rule
+	;none of these, as defined by knowledge representation rules
+
 )
 (setq rules (reverse copy-rules))
 
+; while not solved
+(loop while (not (puzzleSolved)) do
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+)
