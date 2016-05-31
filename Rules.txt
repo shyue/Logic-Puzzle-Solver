@@ -1,5 +1,6 @@
 ;rules 
 ;misspellings are fatal!
+;make sure whether you are using abbreviated names or not
 
 ;each clue split
 ;a is not b -> (a b nil)
