@@ -132,89 +132,84 @@
 	)
 )
 
+
+
 ;rule 2 and 3
 (defun transpositionRule ()
 
-
-	(loop for i from 0 to (- feature-index 1) do
+	(let ((a1 nil) (a2 nil) (b1 nil) (b2 nil))
+	(loop for i from 0 to feature-index do
 		(loop for j from 0 to (- choices 1) do
-		(loop for a from 0 to (- (* feature-index choices) (+ (* i choices) 1) ) do
+		(loop for a from 0 to (- (* feature-index choices) 1 ) do
 			(loop for b from 0 to (- a 1) do
 
 
-						; vertical
-						(if (and (aref table (+ j (* choices i)) a) (aref table (+ j (* choices i)) b)
-							(not (equalp (aref table (+ j (* choices i)) a) 0))
-							(not (equalp (aref table (+ j (* choices i)) b) 0))
-							)
-							(setq rules (cons
-							(list
-							(nth (+ (rem a choices) 0) (nth (+ (floor (/ a choices)) 0) (reverse (cdr features))))
-							(nth (+ (rem b choices) 0) (nth (+ (floor (/ b choices)) 0) (reverse (cdr features))))
-							 t) rules))
-							;(print (list i j a b))
-							;(print (nth (+ (floor (/ a choices)) 1) (reverse (cdr features))))
+					;setting up horiz and vert coordinates to link them
+					(if (<= a (- (* feature-index choices) (+ (* i choices) 1) ))
+						(progn
+							(setq a1 (+ j (* choices i)))
+							(setq a2 a))
+						(progn
+							(setq a1 (- a (- (* feature-index choices) (+ (* i choices) 0) )))
+							(setq a2 (verLoc (nth (rem (+ j (* choices i)) choices) (nth (floor (/ (+ j (* choices i)) choices)) features)))))
+					)
+					(if (<= b (- (* feature-index choices) (+ (* i choices) 1) ))
+						(progn
+							(setq b1 (+ j (* choices i)))
+							(setq b2 b))
+						(progn
+							(setq b1 (- b (- (* feature-index choices) (+ (* i choices) 0) )))
+							(setq b2 (verLoc (nth (rem (+ j (* choices i)) choices) (nth (floor (/ (+ j (* choices i)) choices)) features)))))
+					)
 
+					;(print (list i j a b a1 a2 b1 b2 (aref table a1 a2) (aref table b1 b2)))
+
+						; true true case
+						(if (and (aref table a1 a2) (aref table b1 b2)
+							(not (equalp (aref table a1 a2) 0))
+							(not (equalp (aref table b1 b2) 0))
+							)
+
+							(setq rules (cons
+							(reverse (cons t
+							(my-set-difference
+							(list (nth (rem a1 choices) (nth (floor (/ a1 choices)) features))
+							(nth (rem a2 choices) (nth (floor (/ a2 choices)) (reverse (cdr features)))))
+							(list (nth (rem b1 choices) (nth (floor (/ b1 choices)) features))
+							(nth (rem b2 choices) (nth (floor (/ b2 choices)) (reverse (cdr features)))))))) rules))
+							;set to true
 						)
 
-
+						; true false case
 						(if
 							(or
-								(and (aref table (+ j (* choices i)) a) (not (equalp (aref table (+ j (* choices i)) a) 0)) (equalp (aref table (+ j (* choices i)) b) nil))
-								(and (aref table (+ j (* choices i)) b) (not (equalp (aref table (+ j (* choices i)) b) 0)) (equalp (aref table (+ j (* choices i)) a) nil))
-							)
-								(setq rules (cons
-								(list
-								(nth (+ (rem a choices) 0) (nth (+ (floor (/ a choices)) 0) (reverse (cdr features))))
-								(nth (+ (rem b choices) 0) (nth (+ (floor (/ b choices)) 0) (reverse (cdr features))))
-								 nil) rules))
-								;(print (list i j a b))
-								;(print (nth (+ (floor (/ a choices)) 1) (reverse (cdr features))))
-						)
-
-						;horizontal
-						(if (and (aref table a (+ j (* choices i))) (aref table b (+ j (* choices i)))
-							(not (equalp (aref table a (+ j (* choices i))) 0))
-							(not (equalp (aref table b (+ j (* choices i))) 0))
+								(and (aref table a1 a2) (not (equalp (aref table a1 a2) 0)) (equalp (aref table b1 b2) nil))
+								(and (aref table b1 b2) (not (equalp (aref table b1 b2) 0)) (equalp (aref table a1 a2) nil))
 							)
 							(setq rules (cons
-							(list
-							(nth (+ (rem a choices) 0) (nth (+ (floor (/ a choices)) 0) features))
-							(nth (+ (rem b choices) 0) (nth (+ (floor (/ b choices)) 0) features))
-							 t) rules))
-							;(print (list i j a b))
-							;(print (nth (+ (floor (/ a choices)) 1) (reverse (cdr features))))
-
+							(reverse (cons nil
+							(my-set-difference
+							(list (nth (rem a1 choices) (nth (floor (/ a1 choices)) features))
+							(nth (rem a2 choices) (nth (floor (/ a2 choices)) (reverse (cdr features)))))
+							(list (nth (rem b1 choices) (nth (floor (/ b1 choices)) features))
+							(nth (rem b2 choices) (nth (floor (/ b2 choices)) (reverse (cdr features)))))))) rules))
+							; set to false
 						)
 
+				)
 
-						(if
-							(or
-								(and (aref table a (+ j (* choices i))) (not (equalp (aref table a (+ j (* choices i))) 0)) (equalp (aref table b (+ j (* choices i))) nil))
-								(and (aref table b (+ j (* choices i))) (not (equalp (aref table b (+ j (* choices i))) 0)) (equalp (aref table a (+ j (* choices i))) nil))
-							)
-								(setq rules (cons
-								(list
-								(nth (+ (rem a choices) 0) (nth (+ (floor (/ a choices)) 0) features))
-								(nth (+ (rem b choices) 0) (nth (+ (floor (/ b choices)) 0) features))
-								 nil) rules))
-								;(print (list i j a b))
-								;(print (nth (+ (floor (/ a choices)) 1) (reverse (cdr features))))
-						)
-
-
-
-
-
-
-
-			)
 		)
 		)
-	)
+	))
 )
 
-
+; used to find differences between two sets - useful in transpositions
+(defun my-set-difference (a b)
+  (remove-if
+     #'(lambda (x) (and (member x a) (member x b)))
+     (append a b)
+	 )
+)
 
 ; horizontal location - finds array index of the first location in rule (meaning it is on top)
 (defun horLoc (a)
@@ -241,7 +236,7 @@ returner
 )
 
 
-
+(defun main ()
 ; while not solved
 (loop while (not (puzzleSolved)) do
 
@@ -283,6 +278,7 @@ returner
 (setq rules (reverse copy-rules))
 
 
+
 	(setq copy-rules nil)
 	(dolist (curr-rule rules)
 		;single-single rule
@@ -294,19 +290,20 @@ returner
 
 	)
 	(setq rules (reverse copy-rules))
-	(print rules)
+
+
 
 	(fillRule)
-
-
 
 	(transpositionRule)
 
 
-	(write table)
-	(print '-------)
 
-	(return)
+
+
 )
 
-;(write table)
+;printing stuff
+
+
+)
