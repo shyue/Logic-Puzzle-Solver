@@ -1,12 +1,15 @@
 ;lists of features and properties
 ;Feature lists	- longer version: (player position lucky-charm)
-(player position charm)
+(player position lucky-charm)
 ;Player list - longer version: (Blacket Bluet Browning Greenfield Whitehall)
-(black blue brown green white)
+;short version: (black blue brown green white)
+(Blacket Bluet Browning Greenfield Whitehall)
 ;Position list	- longer version: (center-field first-base right-field shortstop third-base)
-(center first right short third)
+;short version: (center first right short third)
+(center-field first-base right-field shortstop third-base)
 ;Charm list - longer version: (clover penny rabbit-foot ribbon silver-dollar)
-(clover penny foot ribbon dollar)
+;short version: (clover penny foot ribbon dollar)
+(clover penny rabbit-foot ribbon silver-dollar)
 ;Property Lists
 ;coins
 (penny dollar)
