@@ -1,3 +1,7 @@
+; Daniel Chen
+; Josh Yuan
+
+
 (setq features '(
 		(Blacket Bluet Browning Greenfield Whitehall)
 		(Four-Leaf-Clover Penny Rabbit-Foot Ribbon Silver-Dollar)
@@ -8,7 +12,7 @@
 		(Browning Center nil)
 		(Browning Right nil)
 		(Center Penny nil)
-		(Centy Silver-Dollar nil)
+		(Center Silver-Dollar nil)
 		(Right Penny nil)
 		(Right Silver-Dollar nil)
 		(Browning Penny nil)
@@ -41,4 +45,67 @@
 
 		(Center Rabbit-Foot nil)
 ))
+
+
+;creating table that is (num features - 1)*(choices for feature) squared
+(setf feature-index (- (length features) 1) )
+(setf choices (length (car features)) )
+
+(setf table (make-array (list
+	(* feature-index choices)
+	(* feature-index choices)
+)))
+(write table)
+
+
+; fix rules
+(setq copy-rules nil)
+; for each rule
+(dolist (curr-rule rules)
+	;single rule
+	(if (and (atom (first curr-rule)) (atom (first curr-rule))) 
+		; check for location of each
+		(let ((x 0) (y 0) (ct 0))
+		(dolist (curr-feat features)
+			(setq ct (+ ct 1))				
+			(if (numberp (position (first curr-rule) curr-feat)) (setq x ct))
+			(if (numberp (position (second curr-rule) curr-feat)) (setq y ct))
+
+
+		)
+		; adding to rules if valid (while also correcting form)
+		(if (< x y) (setq copy-rules (cons curr-rule copy-rules)))
+		(if (> x y) (setq copy-rules (cons (list (second curr-rule) (first curr-rule) (third curr-rule)) copy-rules)))
+		)
+	)
+)
+(setq rules (reverse copy-rules))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
