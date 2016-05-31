@@ -1,5 +1,22 @@
 ;rules 
+;misspellings are fatal!
+
+;each clue split
+;a is not b -> (a b nil)
+;a is b -> (a b t)
+;For multiple of the same facts, split it (ex: a and b are not c -> (a c nil), (b c nil))
+;Neither a nor b has/is c -> (a c nil), (b c nil), (a b nil)
+;a does/is not either b or c -> (a b nil), (a c nil)
+;the n things are: a b c d...n -> (a b nil) (a c nil) (a d nil) ... (a n nil) (b c nil) (b d nil) ... (b n nil) (c d nil) ... etc.
+;a is either b or c -> (b c nil) (a (b c) t) Note: (b c nil) can be removed if they are same type (ex: Nick has a dog or cat)
+;a is either b or c -> (a x nil) where x is in the same list as b and c, but is not b and c
+;of a and b, one was c and the other was d -> (a b nil) (c d nil) (a (c d)) (b (c d))
+;a's b-type (ex: Whitehall's infield position) -> (a b nil)
+;for words that encompass multiple things, break them out -> a is an outfielder -> a is either center or right -> use corresponding rule
+;-> a is not an outfielder -> (a center nil) (b right nil)
 '(
+	;first clue: Neither Browning nor the two outfielders have a coin as a lucky charm
+	;extended version of - Neither a nor b has/is c -> (a c nil), (b c nil), (a b nil)
 	(Browning Center nil)
 	(Browning Right nil)
 	(Center Penny nil)
@@ -9,9 +26,15 @@
 	(Browning Penny nil)
 	(Browning Silver-Dollar nil)
 	
+	;second clue: Bluet is not an outfielder
+	;basic case, just split up outfielder - a is not b -> (a b nil)
 	(Bluet Center nil)
 	(Bluet Right nil)
-
+	
+	;third clue: Greenfield is an outfielder and Whitehall's infield position is not first base but neither has as her lucky charm a clover or a penny and Blacket does not have either of these two lucky charms.
+	;uses both of these:
+	;of a and b, one was c and the other was d -> (a b nil) (c d nil) (a (c d)) (b (c d))
+	;the n things are: a b c d...n -> (a b nil) (a c nil) (a d nil) ... (a n nil) (b c nil) (b d nil) ... (b n nil) (c d nil) ... etc.
 	(Greenfield (Center Right) t)
 	(Greenfield First nil)
 	(Greenfield Shortstop nil)
@@ -27,6 +50,8 @@
 	(Blacket Four-Leaf-Clover nil)
 	(Blacket Penny nil)
 
+	;fourth clue: Blacket and Bluet are not the players who play first base or third base and neither of them has a lucky ribbon.
+	;basically Neither a nor b has/is c -> (a c nil), (b c nil), (a b nil)
 	(Blacket Ribbon nil)
 	(Bluet Ribbon nil)
 	(Blacket First nil)
@@ -34,4 +59,6 @@
 	(Bluet First nil)
 	(Bluet Third nil)
 
+	;fifth clue:  The centerfielder's lucky charm is not a rabbit's foot. 
+	;basic case - a is not b -> (a b nil)
 	(Center Rabbit-Foot nil))
