@@ -105,3 +105,6 @@ horiz_rule2and3 -> finds all trues, and then looks horiz for a (the same element
 an additional function called loc will be used
 
 loc will change it into coordinates - choice a can be found in position (feature index-1)*(number of choices per feature)+(position in feature list)
+
+
+wow i just found out that this is a shitty inefficient and disgusting method and i should kill myself

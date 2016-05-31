@@ -80,7 +80,7 @@
 )
 
 ;rule 1 - filling in grid
-(defun fillRule()
+(defun fillRule ()
 	(loop for i from 0 to (- feature-index 1) do
 		(loop for j from 0 to (- feature-index (+ 1 i)) do
 		;check for true
@@ -129,6 +129,39 @@
 	)
 )
 
+;rule 2 and 3
+(defun transpositionRule ()
+
+
+	(loop for i from 0 to (- feature-index 1) do
+		(loop for j from 0 to (- choices 1) do
+		(loop for a from 0 to (- (* feature-index choices) (+ (* i choices) 1) ) do
+			(loop for b from 0 to (- a 1) do
+				(if (not (equalp a b))
+					;(setq x (+ j (* choices i)))
+
+						; vertical
+						(if (and (aref table (+ j (* choices i)) a) (aref table (+ j (* choices i)) b)
+							(not (equalp (aref table (+ j (* choices i)) a) 0))
+							(not (equalp (aref table (+ j (* choices i)) b) 0))
+							)
+							(setq rules (cons
+							(list
+							(nth (+ (rem a choices) 0) (nth (+ (floor (/ a choices)) 0) (reverse (cdr features))))
+							(nth (+ (rem b choices) 0) (nth (+ (floor (/ b choices)) 0) (reverse (cdr features))))
+							 t) rules))
+							;(print (list i j a b))
+							;(print (nth (+ (floor (/ a choices)) 1) (reverse (cdr features))))
+
+						)
+
+
+				)
+			)
+		)
+		)
+	)
+)
 
 
 
@@ -155,6 +188,11 @@ returner
 ))
 returner
 )
+
+
+
+; while not solved
+(loop while (not (puzzleSolved)) do
 
 
 ; fix rules
@@ -193,8 +231,6 @@ returner
 
 (setq rules (reverse copy-rules))
 
-; while not solved
-(loop while (not (puzzleSolved)) do
 
 	(setq copy-rules nil)
 	(dolist (curr-rule rules)
@@ -210,7 +246,12 @@ returner
 
 	(fillRule)
 
-	(write table)
+	;(write table)
 
+	(transpositionRule)
+
+	;(write table)
+
+	(print rules)
 	(return)
 )
