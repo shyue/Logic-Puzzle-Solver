@@ -6,7 +6,7 @@
 (Blacket Bluet Browning Greenfield Whitehall)
 ;Position list	- longer version: (center-field first-base right-field shortstop third-base)
 ;short version: (center first right short third)
-(center-field first-base right-field shortstop third-base)
+(center first right shortstop third)
 ;Charm list - longer version: (clover penny rabbit-foot ribbon silver-dollar)
 ;short version: (clover penny foot ribbon dollar)
 (clover penny rabbit-foot ribbon silver-dollar)
