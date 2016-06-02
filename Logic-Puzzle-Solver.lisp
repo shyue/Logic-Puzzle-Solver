@@ -261,8 +261,8 @@ returner
 
 (defun main ()
 
-(reader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/testFeature1.txt")
-(ruleReader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/testRules1.txt")
+(reader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/classreunionfeatures.txt")
+(ruleReader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/classreunionclues.txt")
 (tableMaker)
 
 
@@ -330,13 +330,12 @@ returner
 
 	)
 	(setq rules (reverse copy-rules))
-    (print rules)
 
 
 	(fillRule)
 
 
-	;(transpositionRule)
+	(transpositionRule)
     ;(printTable)
     ;(printFullTable)
     ;(setq ct (+ 1 ct))
