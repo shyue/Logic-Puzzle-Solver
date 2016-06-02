@@ -19,4 +19,6 @@
 (Gary Avalon nil)
 (Creepy Avalon nil)
 (Breakfast High nil)
-(Macabre Castle t))
+(Macabre Castle t)
+(High Castle nil)
+)

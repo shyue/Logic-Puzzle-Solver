@@ -309,7 +309,7 @@ returner
 
 (setq rules (reverse copy-rules))
 
-	;(print rules)
+
 
 	(setq copy-rules nil)
 	(dolist (curr-rule rules)
@@ -325,29 +325,22 @@ returner
             )
 		)
 
-		;(if (and (atom (first curr-rule)) (atom (second curr-rule)))
-		;(if (not (equalp (third curr-rule) (aref table (horLoc (first curr-rule)) (verLoc (second curr-rule)))))
-			;(print (list curr-rule (aref table (horLoc (first curr-rule)) (verLoc (second curr-rule)))))
-
-		;))
-
 		(if (not (and (atom (first curr-rule)) (atom (second curr-rule))))
 		(setq copy-rules (cons curr-rule copy-rules)))
 
 	)
 	(setq rules (reverse copy-rules))
+    (print rules)
 
-    ;(setq ct (+ 1 ct))
-    (printTable)
-    (printFullTable)
-    (print '------)
+
 	(fillRule)
 
 
-	(transpositionRule)
-    (printTable)
-    (printFullTable)
-    (print '------DONE------)
+	;(transpositionRule)
+    ;(printTable)
+    ;(printFullTable)
+    ;(setq ct (+ 1 ct))
+    ;(print '------DONE------)
 
 )
 
