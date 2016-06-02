@@ -59,58 +59,69 @@
 
 	returner
 )
-
+(defun fillVert ()
+(loop for i from 0 to (- feature-index 1) do
+    (loop for j from 0 to (- feature-index (+ 1 i)) do
+    (loop for x from 0 to (- choices 1) do
+        (setq avail nil)
+        (loop for y from 0 to (- choices 1) do
+            (if (aref table (+ (* choices i) x) (+ (* choices j) y))
+                (setq avail (cons y avail))
+            )
+        )
+        (if (and avail (not (cdr avail)))
+        (setf (aref table (+ (* choices i) x) (+ (* choices j) (first avail))) t)
+        )
+    )
+    )
+    )
+)
+(defun fillHori ()
+(loop for i from 0 to (- feature-index 1) do
+    (loop for j from 0 to (- feature-index (+ 1 i)) do
+    (loop for y from 0 to (- choices 1) do
+        (setq avail nil)
+        (loop for x from 0 to (- choices 1) do
+            (if (aref table (+ (* choices i) x) (+ (* choices j) y))
+                (setq avail (cons x avail))
+            )
+        )
+        (if (and avail (not (cdr avail)))
+        (setf (aref table (+ (* choices i) (first avail)) (+ (* choices j) y)) t)
+        )
+    )
+    )
+    )
+)
+(defun findTrue ()
+(loop for i from 0 to (- feature-index 1) do
+    (loop for j from 0 to (- feature-index (+ 1 i)) do
+    ;check for true
+        (loop for x from 0 to (- choices 1) do
+            (loop for y from 0 to (- choices 1) do
+                ;(print (list i j x y))
+                ;(print (aref table (+ (* choices i) x) (+ (* choices j) y)))
+                (if (and (aref table (+ (* choices i) x) (+ (* choices j) y)) (not (equalp (aref table (+ (* choices i) x) (+ (* choices j) y)) 0)))
+                    ;(print (list (+ (* choices i) x) (+ (* choices j) y)))
+                    (loop for a from 0 to (- choices 1) do
+                        (loop for b from 0 to (- choices 1) do
+                            ;a=x XOR b=y
+                            (if (and (not (and (equalp a x) (equalp b y))) (or (equalp a x) (equalp b y)))
+                                    (setf (aref table (+ (* choices i) a) (+ (* choices j) b)) nil)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+)
 ;rule 1 - filling in grid
 (defun fillRule ()
-	(loop for i from 0 to (- feature-index 1) do
-		(loop for j from 0 to (- feature-index (+ 1 i)) do
-
-		;find trues vertically
-		(loop for x from 0 to (- choices 1) do
-			(setq avail nil)
-			(loop for y from 0 to (- choices 1) do
-				(if (equalp (aref table (+ (* choices i) x) (+ (* choices j) y)) 0)
-					(setq avail (cons y avail))
-				)
-			)
-			(if (and avail (not (cdr avail)))
-			(setf (aref table (+ (* choices i) x) (+ (* choices j) (first avail))) t)
-			)
-		)
-
-		;find trues horizontally
-		(loop for y from 0 to (- choices 1) do
-			(setq avail nil)
-			(loop for x from 0 to (- choices 1) do
-				(if (equalp (aref table (+ (* choices i) x) (+ (* choices j) y)) 0)
-					(setq avail (cons x avail))
-				)
-			)
-			(if (and avail (not (cdr avail)))
-			(setf (aref table (+ (* choices i) (first avail)) (+ (* choices j) y)) t)
-			)
-		)
-
-		;check for true
-			(loop for x from 0 to (- choices 1) do
-				(loop for y from 0 to (- choices 1) do
-					;(print (list i j x y))
-					;(print (aref table (+ (* choices i) x) (+ (* choices j) y)))
-					(if (and (aref table (+ (* choices i) x) (+ (* choices j) y)) (not (equalp (aref table (+ (* choices i) x) (+ (* choices j) y)) 0)))
-						;(print (list (+ (* choices i) x) (+ (* choices j) y)))
-						(loop for a from 0 to (- choices 1) do
-							(loop for b from 0 to (- choices 1) do
-								;a=x XOR b=y
-								(if (and (not (and (equalp a x) (equalp b y))) (or (equalp a x) (equalp b y)))
-										(setf (aref table (+ (* choices i) a) (+ (* choices j) b)) nil)
-								)
-							)
-						)
-					)
-				)
-			)
-		)
-	)
+    (fillVert)
+    (fillHori)
+    (findTrue)
 )
 
 
@@ -217,24 +228,50 @@ returner
 returner
 )
 
+(defun printTable()
+(let ((curr-list nil))
+(loop for i from 0 to (- choices 1) do
+	(setq curr-list (cons (nth i (car features)) nil))
+	(loop for j from 0 to (- (* choices feature-index) 1) do
+	(if (and (aref table i j) (not (equalp (aref table i j) 0)))
+	(setq curr-list (cons (nth (+ (rem j choices) 0) (nth (+ (floor (/ j choices)) 0) (reverse (cdr features)))) curr-list))
+	)
+	)
+	(print (reverse curr-list))
+)))
+
+(defun printFullTable()
+(let ((holder nil))
+(loop for i from 0 to (- (* feature-index choices) 1) do
+    (setq holder nil)
+    (loop for j from 0 to (- (* feature-index choices) 1) do
+        (if (aref table j i)
+            ;(setq holder (cons (concatenate (aref table j i) '__) holder))
+            (progn
+            (setq holder (cons (aref table j i) holder))
+            (setq holder (cons '_ holder))
+            )
+            (setq holder (cons (aref table j i) holder)))
+    )
+    (print (reverse holder))
+)
+)
+)
+
 
 (defun main ()
 
-(reader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/testFeature2.txt")
-(ruleReader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/testRules2.txt")
+(reader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/testFeature1.txt")
+(ruleReader "C:/Users/guest1/Downloads/Apache-Subversion-1.9.3/bin/ccl/Logic-Puzzle-Solver/testRules1.txt")
 (tableMaker)
 
 
 (setq ct 0)
 ; while not solved
-;(loop while (not (puzzleSolved)) do
-(loop while (< ct 5) do
+(loop while (not (puzzleSolved)) do
+;(loop while (< ct 5) do
 
-;(print rules)
-;(print features)
-;(print (* feature-index choices))
-;(print feature-index)
-;(print choices)
+
 
 ; fix rules
 (setq copy-rules nil)
@@ -278,9 +315,14 @@ returner
 	(dolist (curr-rule rules)
 		;single-single rule
 		(if (and (atom (first curr-rule)) (atom (second curr-rule)))
-			(if  (equalp (aref table (horLoc (first curr-rule)) (verLoc (second curr-rule))) 0)
+            (progn
+            ;(if  (equalp (aref table (horLoc (first curr-rule)) (verLoc (second curr-rule))) 0)
 				(setf (aref table (horLoc (first curr-rule)) (verLoc (second curr-rule))) (third curr-rule))
-			)
+			;)
+            (if (not (equalp (third curr-rule) (aref table (horLoc (first curr-rule)) (verLoc (second curr-rule)))))
+                (print (list curr-rule (aref table (horLoc (first curr-rule)) (verLoc (second curr-rule)))))
+            )
+            )
 		)
 
 		;(if (and (atom (first curr-rule)) (atom (second curr-rule)))
@@ -295,32 +337,22 @@ returner
 	)
 	(setq rules (reverse copy-rules))
 
-
-	;(print '---)
-	;(write table)
+    ;(setq ct (+ 1 ct))
+    (printTable)
+    (printFullTable)
+    (print '------)
 	(fillRule)
 
 
 	(transpositionRule)
-	;(print '***)
-	;(write table)
-	;(fillRule)
-
-	(setq ct (+ 1 ct))
-
+    (printTable)
+    (printFullTable)
+    (print '------DONE------)
 
 )
 
+
 ;printing stuff
-(let ((curr-list nil))
-(loop for i from 0 to (- choices 1) do
-	(setq curr-list (cons (nth i (car features)) nil))
-	(loop for j from 0 to (- (* choices feature-index) 1) do
-	(if (and (aref table i j) (not (equalp (aref table i j) 0)))
-	(setq curr-list (cons (nth (+ (rem j choices) 0) (nth (+ (floor (/ j choices)) 0) (reverse (cdr features)))) curr-list))
-	)
-	)
-	(print (reverse curr-list))
-))
+(printTable)
 
 )
